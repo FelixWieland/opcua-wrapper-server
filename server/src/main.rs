@@ -18,16 +18,16 @@ fn main() {
             .unwrap()
     };
 
-    println!("Initialize server from schemas");
-    let schemas= [
-        schema::read::read_schema("./schemas/test_data_provider.json")
-    ].to_vec();
-    let node_ids = schema::control::initialize_server_from_schemas(&mut server, ns, schemas, &NodeId::objects_folder_id());
-
-    println!("Initialize crawlers");
-    let crawler_config = crawler::read::read_crawler_config("./crawler.json");
-    crawler_config.create_and_run_all_crawlers(&mut server, &node_ids);
-
+    println!("Initialize server");
+    let crawler_config = crawler::read::read_crawler_config("./config.json");
+    
+    for target in crawler_config.targets {
+        let schema = schema::read::read_schema(&target.schema_path);
+        let node_ids = schema::control::initialize_server_from_schema(&mut server, ns, schema, &NodeId::objects_folder_id());
+        let crawler = target.create_crawler();
+        crawler.start(&mut server, &node_ids)
+    }
+    
     println!("Starting server");
     server.run();
 }

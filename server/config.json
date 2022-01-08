@@ -3,7 +3,8 @@
         {
             "variant": "test_data_provider",
             "interval": 1000,
-            "endpoint": "http://localhost:8080/mock"
+            "endpoint": "http://localhost:8080/mock",
+            "schemaPath": "./schemas/test_data_provider.json"
         }
     ]
 }

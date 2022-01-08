@@ -7,15 +7,7 @@ pub struct ExtendedNodeId {
     pub schema: Schema
 }
 
-pub fn initialize_server_from_schemas(server: &mut Server, ns: u16, schemas: Vec<Schema>, parent_id: &NodeId) -> Vec<ExtendedNodeId> {
-    let mut node_ids = vec![]; 
-    for schema in schemas {
-        node_ids.append(&mut initialize_server_from_schema(server, ns, schema, parent_id))
-    }
-    node_ids
-}
-
-fn initialize_server_from_schema(server: &mut Server, ns: u16, schema: Schema, parent_id: &NodeId) -> Vec<ExtendedNodeId> {
+pub fn initialize_server_from_schema(server: &mut Server, ns: u16, schema: Schema, parent_id: &NodeId) -> Vec<ExtendedNodeId> {
     match schema.children.clone() {
         Some(children) => {
             let address_space = server.address_space();
@@ -29,7 +21,6 @@ fn initialize_server_from_schema(server: &mut Server, ns: u16, schema: Schema, p
         None => {
             let address_space = server.address_space();
             let mut address_space = address_space.write().unwrap();
-
             let opcua_node_id = NodeId::new(ns, schema.get_node_id());
             let _ = address_space.add_variables(
                 vec![
@@ -44,4 +35,12 @@ fn initialize_server_from_schema(server: &mut Server, ns: u16, schema: Schema, p
             }].to_vec()
         },
     }
+}
+
+pub fn initialize_server_from_schemas(server: &mut Server, ns: u16, schemas: Vec<Schema>, parent_id: &NodeId) -> Vec<ExtendedNodeId> {
+    let mut node_ids = vec![]; 
+    for schema in schemas {
+        node_ids.append(&mut initialize_server_from_schema(server, ns, schema, parent_id))
+    }
+    node_ids
 }
