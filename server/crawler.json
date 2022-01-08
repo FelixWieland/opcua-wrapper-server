@@ -1,0 +1,9 @@
+{
+    "targets": [
+        {
+            "variant": "test_data_provider",
+            "interval": 1000,
+            "endpoint": "http://localhost:8080/mock"
+        }
+    ]
+}

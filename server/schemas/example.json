@@ -1,0 +1,13 @@
+{
+    "displayName": "folder1",
+    "children": [
+        {
+            "displayName": "folder2",
+            "children": [
+                {
+                    "nodeId": "test"
+                }
+            ]
+        }
+    ]
+}
